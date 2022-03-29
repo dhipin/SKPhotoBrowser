@@ -56,7 +56,14 @@ open class SKPhotoBrowser: UIViewController {
     open weak var delegate: SKPhotoBrowserDelegate?
 
     // statusbar initial state
-    private var statusbarHidden: Bool = UIApplication.shared.isStatusBarHidden
+    private var statusbarHidden: Bool {
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+            return ((window?.windowScene?.statusBarManager?.isStatusBarHidden) != nil)
+        } else {
+            return UIApplication.shared.isStatusBarHidden
+        }
+    }
     
     // strings
     open var cancelTitle = "Cancel"

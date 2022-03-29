@@ -13,7 +13,12 @@ struct SKMesurement {
     static let isPhone: Bool = UIDevice.current.userInterfaceIdiom == .phone
     static let isPad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     static var statusBarH: CGFloat {
-        return UIApplication.shared.statusBarFrame.height
+        if #available(iOS 13.0, *) {
+            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+            return window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        } else {
+            return UIApplication.shared.statusBarFrame.height
+        }
     }
     static var screenHeight: CGFloat {
         return UIApplication.shared.preferredApplicationWindow?.bounds.height ?? UIScreen.main.bounds.height
